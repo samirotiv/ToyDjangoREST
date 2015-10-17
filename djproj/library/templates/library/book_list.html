@@ -1,0 +1,41 @@
+{% load staticfiles %}
+<html>
+<head>
+	<title>List of available books</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'library/style.css' %}" media="all"/>
+	<style>
+	body{
+		text-align:center;
+	}
+	h2{
+		font-size: 32px;
+    	font-weight: 600;
+    	color: rgb(181, 101, 0);
+    	text-align: center;
+    	margin: 0;
+	}
+	table, th, td {
+   		margin-left: auto;
+		margin-right: auto;
+   		border: 1px solid black;
+   		text-align: center;
+   		padding: 10px;
+	}
+	</style>
+</head>
+		<body>
+		<h2>Available Books</h2>
+	    <table>
+       	<tr><th>Title</th><th>Publisher</th><th>Author</th><th>Count</th><th>Date Added</th></tr>
+        {% for book in object_list %}
+            <tr>
+            <td>{{ book.title }}</td>
+            <td>{{ book.publisher}}</td>
+            <td>{{ book.author}}</td>
+            <td>{{ book.count}}</td>
+            <td>{{ book.date_added}}</td>
+            </tr>
+        {% endfor %}
+        </table>
+        </body>
+</html>
