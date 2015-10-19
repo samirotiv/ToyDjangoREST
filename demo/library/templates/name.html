@@ -1,0 +1,29 @@
+{% load staticfiles %}
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Login form for Library Application</title>
+<link rel="stylesheet" type="text/css" href="{% static 'library/style.css' %}" media = "all"/>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+<meta name="keywords" content="Login form" />
+<link href='//fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css'>
+</head>
+<body>
+	<div class="head">
+		<div class="head-text">
+			<h1>Login</h1>
+		</div>
+		<div class="login">
+			<div class="login-form">
+				<form method="post">
+    			{% csrf_token %}
+    			{{ form }}
+    			<input type="submit" class="submit" value="Sign in" />
+				</form>
+			</div>
+		</div>				
+	</div>	
+</body>
+</html>
