@@ -1,0 +1,56 @@
+
+<html>
+    <head>
+        <title>{{heading}}</title>
+        <style>
+          table, th, td {
+              border: 2px solid black;
+          }
+          th, td {
+              padding: 5px;
+          }
+        </style>
+    </head>
+    <h1>{{heading}}</h1>
+    <h5><a href="http://127.0.0.1:8000/portal/">GetBack!</a></h5>
+
+    <!-- <table>
+      <tr>
+        <td> {{currentBook.title}}</td>
+        <td> {{currentBook.publisher}}</td>
+        <td> {{currentBook.noBooks}}</td>
+        <td> <li><a href="/portal/returnbook/{{currentBook.id}}/">Return Book</a></li></td>
+        </tr>
+    </table> --> 
+
+    <h3>Book<h3>
+    {% if bookList %}
+    <table>
+    {% for book in bookList %}
+      <tr>
+        <td> {{book.title}}</td>
+        <td> {{book.publisher}}</td>
+        <td> {{book.noBooks}}</td>
+        <td> <li><a href="/portal/borrowbook/{{book.id}}/">Borrow Book</a></li></td>
+      </tr>
+      {% endfor %}
+    </table>
+    {% else %}
+      <p>No Books are available.</p>
+    {% endif %}
+
+    <h3>Available Authors<h3>
+
+    {% if authorList %}
+    <table>
+    {% for author in authorList %}
+      <td>
+        {{author.authorName}}
+      </td>
+      {% endfor %}
+    </table>
+    {% else %}
+      <p>Authors detail not available.</p>
+    {% endif %}
+
+</html>

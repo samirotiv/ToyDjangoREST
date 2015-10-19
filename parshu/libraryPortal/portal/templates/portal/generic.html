@@ -1,0 +1,26 @@
+
+<html>
+    <head>
+        <title>{{heading}}</title>
+        <style>
+          table, th, td {
+              border: 2px solid black;
+          }
+          th, td {
+              padding: 5px;
+          }
+        </style>
+    </head>
+    <body>
+      <form method="post" action=".">
+          {% csrf_token %}
+      <h1>{{heading}} </h>
+      <h4><a href="http://127.0.0.1:8000/portal/">GetBack!</a></h4>
+      <p>{{message}}</p>
+      <table>
+        {{form}}
+      </table>
+      <input type="submit" value="submit" />
+    </form>
+    </body>
+</html>

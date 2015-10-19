@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Home</title>
+    </head>
+    <body>
+      {% if user.is_authenticated and user.userprofile.userType %}
+      <p><a href="http://127.0.0.1:8000/portal/logout/">Logout</a>
+      <p><a href="http://127.0.0.1:8000/portal/librarian/title">Profile</a>
+
+      {% elif user.is_authenticated %}
+      <p><a href="http://127.0.0.1:8000/portal/logout/">Logout</a>
+      <p><a href="http://127.0.0.1:8000/portal/customer/">Profile</a>
+
+      {% else %}
+      <h1>Welcome To Library Portal</h1>
+      <p><a href="http://127.0.0.1:8000/portal/registration/">Register here!</a>
+      </p>
+      <p><a href="http://127.0.0.1:8000/portal/login/">Login here!</a>
+      </p>
+      {% endif %}
+    </body>
+</html>

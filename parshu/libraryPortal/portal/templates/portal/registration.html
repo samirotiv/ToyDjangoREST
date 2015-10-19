@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Portal</title>
+    </head>
+
+    <body>
+        {% if registered %}
+        <strong>thank you for registering!</strong>
+        <a href="/portal/">Return to the homepage.</a><br />
+        {% else %}
+        <strong>Register here!</strong><br />
+
+        <form id="user_form" method="post" action=".">
+
+            {% csrf_token %}
+
+            <table>
+              <p> {{ user_form }} </p>
+            </table>
+            <table>
+              <p> {{ profile_form}} </p>
+            </table>
+
+            <p><input type="submit" name="submit" value="Register" /></p>
+        </form>
+        {% endif %}
+    </body>
+    <p><a href="http://127.0.0.1:8000/portal/login/">LogIn here!</a>
+    </p>
+</html>

@@ -1,0 +1,8 @@
+<h1>{{ book.title }}</h1>
+<ul>
+    <li>Publisher : {{ book.publisher }}</li>
+    <li>noBooks : {{ book.noBooks }}</li>
+    {% for author in book.authorss.all %}
+        <li><a href="/portal/{{book.id}}/">{{book.title}}</a></li>
+    {% endfor %}
+</ul>
