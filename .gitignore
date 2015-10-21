@@ -1,3 +1,5 @@
 
 *.pyc
 /djproj/*/migrations
+/*/migrations
+db.sqlite3
