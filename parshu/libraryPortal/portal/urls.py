@@ -1,12 +1,12 @@
 from django.conf.urls import url
-
 from . import views
-
+from rest_framework.urlpatterns import format_suffix_patterns
 urlpatterns = [
 
     url(r'^$', views.index, name='index'),
-    url(r'^addbook/$', views.addBook, name='addBook'),
-    url(r'^addauthor/$', views.addAuthor, name='addAuthor'),
+    #url(r'^addbook/$', name='addBook'),
+    url(r'^book/$', views.SerialBookList.as_view(), name='book'),
+    url(r'^author/$', views.SerialAuthorList.as_view(), name='Author'),
     # url(r'^editbook/(?P<primaryKey>[0-9]+)/$', views.editBook, name='editBook'),
     # url(r'^deletebook/(?P<primaryKey>[0-9]+)/$', views.deleteBook, name='deleteBook'),
     # url(r'^borrowbook/(?P<primaryKey>[0-9]+)/$', views.borrowBook, name='borrowBook'),
@@ -20,3 +20,4 @@ urlpatterns = [
     url(r'^librarian/(?P<sortby>[A-Za-z]+)/$', views.librarian, name='librarian'),
 
 ]
+urlpatterns = format_suffix_patterns(urlpatterns)

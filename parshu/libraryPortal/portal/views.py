@@ -4,14 +4,51 @@ from django.template import RequestContext
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login , logout
 from django.contrib.auth.decorators import login_required
+
 from django.core import serializers
+from rest_framework import generics
+from portal.serializers import BookSerializer,AuthorSerializer
+from rest_framework import permissions
+from rest_framework.views import APIView
 
 from portal.forms import UserForm, UserProfileForm, AddBookForm, AuthorForm
 from portal.models import UserProfile , Book , Author
 
+from rest_framework import status
+from rest_framework.response import Response
+
+
+class SerialBookList(APIView):
+    def get(self,request,format=None):
+        books = Book.objects.all()
+        serializer=BookSerializer(books,many=True)
+        return Response(serializer.data)
+
+    def post(self,request,format=None):
+        serializer = BookSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data , status=status.HTTP_201_CREATED)
+        return Response(serializer.errors , status=status.HTTP_400_BAD_REQUEST)
+
+class SerialAuthorList(APIView):
+    def get(self,request,format=None):
+        authors = Author.objects.all()
+        serializer=AuthorSerializer(authors,many=True)
+        return Response(serializer.data)
+
+    def post(self,request,format=None):
+        serializer = AuthorSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data , status=status.HTTP_201_CREATED)
+        return Response(serializer.errors , status=status.HTTP_400_BAD_REQUEST)
+
+
+
 def index(request):
     context = RequestContext(request)
-    return render_to_response('portal/index.html', {}, context)
+    return render_to_response('portal/form.html', {}, context)
 
 def registerUser(request):
     context = RequestContext(request)

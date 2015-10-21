@@ -16,7 +16,7 @@ class Author(models.Model):
 class Book(models.Model):
     title = models.CharField(max_length=200)
     publisher = models.CharField(max_length=200, blank=True, null=True)
-    authors = models.ManyToManyField(Author)
+    authors = models.ManyToManyField(Author, blank=True, null=True)
     date = models.DateTimeField('Book added date', blank=True, null=True)
     noBooks = models.IntegerField(default=0)
 

@@ -7,7 +7,7 @@ from rest_framework import generics
 from library.models import Book
 from library.serializers import BookSerializer,LibraryUserSerializer
 from rest_framework import permissions
-
+from rest_framework.response import Response
 class LibraryUserList(generics.ListAPIView):
     queryset = LibraryUser.objects.all()
     serializer_class = LibraryUserSerializer
@@ -26,7 +26,7 @@ class SerialBookList(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
 class SerialBookDetail(generics.RetrieveUpdateDestroyAPIView):
-    lookup_field = 'title'    
+    lookup_field = 'title'
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
@@ -155,7 +155,7 @@ def register(request):
             l.save()
     else:
         form = RegisterForm()
-    return render(request,'register.html',{'form':form})    
+    return render(request,'register.html',{'form':form})
 
 def pick_order(request,username):
     customer_sort_form = OrderForm(prefix="ord")
