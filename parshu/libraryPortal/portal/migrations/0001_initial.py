@@ -18,30 +18,29 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('authorName', models.CharField(max_length=200)),
             ],
+            options={
+                'ordering': ['authorName'],
+            },
         ),
         migrations.CreateModel(
             name='Book',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('title', models.CharField(max_length=200)),
-                ('publisher', models.CharField(max_length=200)),
-                ('date', models.DateTimeField(verbose_name=b'Book added date')),
+                ('publisher', models.CharField(max_length=200, null=True, blank=True)),
+                ('date', models.DateTimeField(null=True, verbose_name=b'Book added date', blank=True)),
                 ('noBooks', models.IntegerField(default=0)),
-                ('authors', models.ForeignKey(to='portal.Author')),
+                ('authors', models.ManyToManyField(to='portal.Author')),
             ],
-        ),
-        migrations.CreateModel(
-            name='Library',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('books_list', models.ForeignKey(to='portal.Book')),
-            ],
+            options={
+                'ordering': ['-title', 'publisher', 'noBooks'],
+            },
         ),
         migrations.CreateModel(
             name='UserProfile',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('userType', models.BooleanField(default=False)),
+                ('userType', models.BooleanField(default=False, choices=[(True, b'Librarian'), (False, b'Customer')])),
                 ('currentBook', models.ForeignKey(blank=True, to='portal.Book', null=True)),
                 ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL)),
             ],

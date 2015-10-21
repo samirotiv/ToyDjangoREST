@@ -107,75 +107,75 @@ def addAuthor(request):
     return render_to_response('portal/generic.html' ,
             {'heading' : "Add Author" , 'message' : m , 'form' : form }  , context  )
 
-@login_required
-def editBook(request , primaryKey):
-    context = RequestContext(request)
-    book = Book.objects.get(pk=primaryKey)
-    if request.method == 'POST' :
-        form = AddBookForm(data=request.POST , instance = book)
-        if form.is_valid():
-            form.save()
-            m = 'saved'
-        else:
-            m = 'failed'
-    else:
-        form = AddBookForm(instance = book)
-        m = ''
+# @login_required
+# def editBook(request , primaryKey):
+#     context = RequestContext(request)
+#     book = Book.objects.get(pk=primaryKey)
+#     if request.method == 'POST' :
+#         form = AddBookForm(data=request.POST , instance = book)
+#         if form.is_valid():
+#             form.save()
+#             m = 'saved'
+#         else:
+#             m = 'failed'
+#     else:
+#         form = AddBookForm(instance = book)
+#         m = ''
 
-    return render_to_response('portal/generic.html' ,
-            {'heading' : "Edit Book" , 'message' : m , 'form' : form }  , context  )
+#     return render_to_response('portal/generic.html' ,
+#             {'heading' : "Edit Book" , 'message' : m , 'form' : form }  , context  )
 
-@login_required
-def editAuthor(request , primaryKey):
-    context = RequestContext(request)
-    author = Author.objects.get(pk=primaryKey)
-    if request.method == 'POST' :
-        form = AuthorForm(data=request.POST , instance = author)
-        if form.is_valid():
-            form.save()
-            m = 'saved'
-        else:
-            m = 'failed'
-    else:
-        form = AuthorForm(instance = author)
-        m = ''
+# @login_required
+# def editAuthor(request , primaryKey):
+#     context = RequestContext(request)
+#     author = Author.objects.get(pk=primaryKey)
+#     if request.method == 'POST' :
+#         form = AuthorForm(data=request.POST , instance = author)
+#         if form.is_valid():
+#             form.save()
+#             m = 'saved'
+#         else:
+#             m = 'failed'
+#     else:
+#         form = AuthorForm(instance = author)
+#         m = ''
 
-    return render_to_response('portal/generic.html' ,
-            {'heading' : "Edit Author" , 'message' : m , 'form' : form }  , context  )
-
-
-@login_required
-def deleteBook(request , primaryKey):
-    context = RequestContext(request)
-    book = Book.objects.get(pk=primaryKey)
-    book.delete()
-    m = "Done"
-    return render_to_response('portal/generic.html' ,
-            {'heading' : "Delete Book" , 'message' : m , 'form' : '' }  , context  )
+#     return render_to_response('portal/generic.html' ,
+#             {'heading' : "Edit Author" , 'message' : m , 'form' : form }  , context  )
 
 
-@login_required
-def borrowBook(request , primaryKey):
-    context = RequestContext(request)
-    book = Book.objects.get(pk=primaryKey)
+# @login_required
+# def deleteBook(request , primaryKey):
+#     context = RequestContext(request)
+#     book = Book.objects.get(pk=primaryKey)
+#     book.delete()
+#     m = "Done"
+#     return render_to_response('portal/generic.html' ,
+#             {'heading' : "Delete Book" , 'message' : m , 'form' : '' }  , context  )
 
-    request.user.currentBook = book
-    request.user.save()
 
-    m = request.user.currentBook.title
-    return render_to_response('portal/generic.html' ,
-            {'heading' : "Borrow Book" , 'message' : m , 'form' : '' }  , context  )
+# @login_required
+# def borrowBook(request , primaryKey):
+#     context = RequestContext(request)
+#     book = Book.objects.get(pk=primaryKey)
 
-@login_required
-def returnBook(request , primaryKey):
-    context = RequestContext(request)
-    book = Book.objects.get(pk=primaryKey)
+#     request.user.currentBook = book
+#     request.user.save()
 
-    request.user.currentBook.null = True;
+#     m = request.user.currentBook.title
+#     return render_to_response('portal/generic.html' ,
+#             {'heading' : "Borrow Book" , 'message' : m , 'form' : '' }  , context  )
 
-    m = request.user.username
-    return render_to_response('portal/generic.html' ,
-            {'heading' : "Return Book" , 'message' : m , 'form' : '' }  , context  )
+# @login_required
+# def returnBook(request , primaryKey):
+#     context = RequestContext(request)
+#     book = Book.objects.get(pk=primaryKey)
+
+#     request.user.currentBook.null = True;
+
+#     m = request.user.username
+#     return render_to_response('portal/generic.html' ,
+#             {'heading' : "Return Book" , 'message' : m , 'form' : '' }  , context  )
 
 @login_required
 def librarian(request , sortby ):
@@ -183,21 +183,21 @@ def librarian(request , sortby ):
     bookList = Book.objects.all()
     authorList = Author.objects.all()
 
-    if sortby == "title" :
-        bookList = bookList.order_by('title')
-    elif sortby == "publisher" :
-        bookList = bookList.order_by('publisher')
-    elif sortby == "noBooks" :
-        bookList = bookList.order_by('noBooks')
+    # if sortby == "title" :
+    #     bookList = bookList.order_by('title')
+    # elif sortby == "publisher" :
+    #     bookList = bookList.order_by('publisher')
+    # elif sortby == "noBooks" :
+    #     bookList = bookList.order_by('noBooks')
 
     return render_to_response('portal/librarian.html' ,
             {'heading' : "Librarian Profile" , 'bookList' : bookList, 'authorList':authorList }  , context  )
 
-@login_required
-def customer(request ):
-    context = RequestContext(request)
-    bookList = Book.objects.all()
-    authorList = Author.objects.all()
-    # currentBook = request.user.currentBook
-    return render_to_response('portal/customer.html' ,
-            {'heading' : "Customer Profile" , 'bookList' : bookList, 'authorList':authorList  }  , context  )
+# @login_required
+# def customer(request ):
+#     context = RequestContext(request)
+#     bookList = Book.objects.all()
+#     authorList = Author.objects.all()
+#     # currentBook = request.user.currentBook
+#     return render_to_response('portal/customer.html' ,
+#             {'heading' : "Customer Profile" , 'bookList' : bookList, 'authorList':authorList  }  , context  )

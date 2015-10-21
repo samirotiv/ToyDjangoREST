@@ -20,17 +20,17 @@
     {% if bookList %}
     <table>
     <tr>
-       <td><li><a href="/portal/librarian/title/">Title</a></li></td>
-       <td><li><a href="/portal/librarian/publisher/">Publisher</a></li></td>
-       <td><li><a href="/portal/librarian/noBooks/">NoBooks</a></li></td>
+       <td><li><!-- <a href="/portal/librarian/title/"> -->Title<!-- </a> --></li></td>
+       <td><li><!-- <a href="/portal/librarian/publisher/"> -->Publisher<!-- </a> --></li></td>
+       <td><li><!-- <a href="/portal/librarian/noBooks/"> -->NoBooks<!-- </a> --></li></td>
     </tr>
     {% for book in bookList %}
       <tr>
         <td> {{book.title}}</td>
         <td> {{book.publisher}}</td>
         <td> {{book.noBooks}}</td>
-        <td> <li><a href="/portal/editbook/{{book.id}}/">Edit</a></li> </td>
-        <td> <li><a href="/portal/deletebook/{{book.id}}/">Delete</a></li> </td>
+       <!--  <td> <li><a href="/portal/editbook/{{book.id}}/">Edit</a></li> </td>
+        <td> <li><a href="/portal/deletebook/{{book.id}}/">Delete</a></li> </td> -->
       </tr>
       {% endfor %}
     </table>
@@ -39,19 +39,20 @@
     {% endif %}
 
     <h3>Author<h3>
-
+    <a href="/portal/addauthor">Add Author</a>
+    <br>
     {% if authorList %}
     <table>
     {% for author in authorList %}
       <tr>
         <td> {{author.authorName}}</td>
-        <td> <li><a href="/portal/editauthor/{{author.id}}/">Edit Author</a></li></td>
+        <!-- <td> <li><a href="/portal/editauthor/{{author.id}}/">Edit Author</a></li></td> -->
       </tr>
       {% endfor %}
     </table>
     {% else %}
       <p>No Authors are available.</p>
-      <td> <li><a href="/portal/addauthor/">Edit Author</a></li></td>
+      <!-- <td> <li><a href="/portal/addauthor/">Edit Author</a></li></td> -->
     {% endif %}
 
 
