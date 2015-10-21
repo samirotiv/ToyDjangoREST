@@ -1,7 +1,8 @@
+{% verbatim %}
 <!DOCTYPE html>
 <html lang="en">
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
 <script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
 <body>
 
 <div ng-app="libApp" ng-controller="bookDetails">
@@ -15,6 +16,9 @@
     <br><br>-->
     <button type="submit">SUBMIT</button>
   </form>
+  <ul>
+    <li ng-repeat="x in bookDet">{{x.authorName}}</li>
+  </ul>
 </div>
 
 <script>
@@ -34,9 +38,22 @@ angular.module('libApp', [])
         }, function errorCallback(response){
           alert("Failed");
         });
-    }                   
+    }
+    $scope.bookDet=[]
+    $http({
+      method: 'GET',
+      url: 'http://localhost:8000/portal/author/'
+    })
+    .then(function successCallback(response){
+      $scope.bookDet = response.data;
+      console.log(response.data);
+    },
+    function errorCallback(response){
+      alert("Failed");
+    });
 })
 </script>
 
 </body>
 </html>
+{% endverbatim %}
