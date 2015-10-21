@@ -1,0 +1,23 @@
+<h1>Registration</h1>
+<form action="{% url 'library:register_func' %}" method="post">
+{% csrf_token %}
+<label>User Type:</label><br><br>
+<input type="radio" name="user_type" id="lib" value="L">
+<label for="lib">Librarian</label>
+<input type="radio" name="user_type" id="cust" value="C" checked>
+<label for="cust">Customer</label>
+<br><br>
+<label for="first">First Name:</label>
+<input type="text" name="first_name" id="first" />
+<br><br>
+<label for="last">Last Name:</label>
+<input type="text" name="last_name" id="last" />
+<br><br>
+<label for="user_name">Username:</label>
+<input type="text" name="user_name" id="user_name" />
+<br><br>
+<label for="pass">Password:</label>
+<input type="password" name="password" id="pass" />
+<br><br>
+<input type="submit" value="Submit" />
+</form>

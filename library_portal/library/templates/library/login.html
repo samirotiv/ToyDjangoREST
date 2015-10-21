@@ -1,0 +1,14 @@
+{% if request.user.is_authenticated != True %} 
+<h1>Login</h1>
+<form action="{% url 'library:login_func' %}" method="post">
+{% csrf_token %}
+<label for="username">Username:</label>
+<input type="text" name="user_name" id="username" /><br><br><br>
+<label for="password">Password:</label>
+<input type="password" name="password" id="password" /><br><br>
+<input type="submit" value="Submit" />
+</form>
+{% else %}
+<h1> You are already logged in, {{request.user.first_name}}! </h1>
+If you want to log-in from another account, click <a href="{% url 'library:logout' %}">here</a>.
+{% endif %}

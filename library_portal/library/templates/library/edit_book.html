@@ -1,0 +1,23 @@
+{% if request.user.is_authenticated == True and request.user.librarian and book %}
+<h1>Edit Book</h1>
+<form action="{% url 'library:edit_book_func' book.id %}" method="post">
+{% csrf_token %}
+<label for="title">Book Title:</label>
+<input type="text" name="book_title" id="title" value="{{book.book_title}}" />
+<br><br>
+<label for="author">Author:</label>
+<input type="text" name="author" id="author" value="{{book.author}}" />
+<br><br>
+<label for="publisher">Publisher</label>
+<input type="text" name="publisher" id="publisher" value="{{book.publisher}}" />
+<br><br>
+<label for="number">Total number:</label>
+<input type="number" name="total_num" id="number" min="0" value="{{book.total_number}}"/>
+<br><br>
+<pre><input type="submit" value="Save Changes" />		<a href="{% url 'library:detail' book.id %}"><input type="button" value="Discard changes"/></a></pre>
+</form>
+<br><br><br>
+<a href="{% url 'library:logout' %}">Log out</a>
+{% else %}
+	<h2>You have to <a href="{% url 'library:welcome' %}">login</a> to access this page</h2>
+{% endif %}

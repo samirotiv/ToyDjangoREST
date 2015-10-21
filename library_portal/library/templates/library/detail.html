@@ -1,0 +1,27 @@
+{% if request.user.is_authenticated == True%}
+	<h1>{{ book.book_title }}</h1>
+
+	{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+	<ul>
+	        <li><h4>Author:</h4>{{ book.author }}</li>
+	        <li><h4>Publisher:</h4>{{ book.publisher }}</li>
+	        <li><h4>Date added:</h4>{{ book.date_added }}</li>
+	        <li><h4>Total number of copies:</h4>{{ book.total_number }}</li>
+	       	<li><h4>Available:</h4>{% if book.available == True %} Yes {% else %} No {% endif %}</li>
+	</ul>
+	<br><br>
+	{% if request.user.librarian %}
+		<a href="{% url 'library:edit_book_page' book.id %}"><input type="button" value="Edit Book" /></a>
+		<a href="{% url 'library:delete_book_page' book.id %}"><input type="button" value="Delete Book" /></a>
+	{% elif request.user.customer %}
+		{% if request.user.customer.book_borrowed.id == book.id %}
+			<a href="{% url 'library:return_book' book.id %}"><input type="button" value="Return this book"></a><br>
+		{% elif book.available == True %}
+			<a href="{% url 'library:request_book' book.id %}"><input type="button" value="Request this Book"></a><br>
+		{% endif %}
+	{% endif %}
+	<br><br><br>
+	<a href="{% url 'library:logout' %}">Log out</a>
+{% else %}
+	<h2>You have to <a href="{% url 'library:welcome' %}">login</a> to access this page</h2>
+{% endif %}

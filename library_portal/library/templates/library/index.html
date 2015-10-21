@@ -1,0 +1,30 @@
+{% if request.user.is_authenticated == True %}
+	<h1>Book List</h1>
+	<h3>Hi {{request.user.first_name}}</h3>
+	{% if book_list %}
+	    <table border="1px solid black">
+	    <tr>
+	    	<th>Title</th>
+	    	<th>Author</th>
+	    	<th>Date Added</th>
+	    </tr>
+	    {% for book in book_list %}
+	        <tr>
+	        <td><a href="{% url 'library:detail' book.id %}">{{ book.book_title }}</a></td>
+	        <td>{{ book.author }}</td>
+	        <td>{{ book.date_added }}</td>
+	        </tr>
+	    {% endfor %}
+	    </table>
+	{% else %}
+	    <p>No books are available.</p>
+	{% endif %}
+	{% if request.user.librarian %}	
+			<a href="{% url 'library:add_book_page' %}"><input type="button" value="Add new Book"/></a>
+	{% endif %}
+	<br><br><br>
+	<a href="{% url 'library:logout' %}">Log out</a>
+{% else %}
+	<h2>You have to <a href="{% url 'library:welcome' %}">login</a> to access this page</h2>
+{% endif %}
+

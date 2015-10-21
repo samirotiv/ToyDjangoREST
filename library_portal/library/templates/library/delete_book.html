@@ -1,0 +1,5 @@
+{% if request.user.is_authenticated == True and request.user.librarian %}
+Are you sure you want to completely delete this book from the library? This will remove <b>all</b> references of this book from the library.<br><br><br>
+<a href="{% url 'library:detail' book_id %}"><input type="button" value="No" /></a>
+<a href="{% url 'library:delete_book_func' book_id %}"><input type="button" value="Yes" /></a>
+{% endif %}

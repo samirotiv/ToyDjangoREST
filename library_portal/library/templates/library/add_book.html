@@ -1,0 +1,21 @@
+{% if request.user.is_authenticated == True and request.user.librarian %}
+<h1>Add Book</h1>
+<form action="{% url 'library:add_book_func' %}" method="post">
+{% csrf_token %}
+<label for="title">Book Title:</label>
+<input type="text" name="book_title" id="title" />
+<br><br>
+<label for="author">Author:</label>
+<input type="text" name="author" id="author" />
+<br><br>
+<label for="publisher">Publisher</label>
+<input type="text" name="publisher" id="publisher" />
+<br><br>
+<label for="number">Total number:</label>
+<input type="number" name="total_num" id="number" min="0" />
+<br><br>
+<input type="submit" value="Submit" />
+</form>
+{% else %}
+	<h2>You have to <a href="{% url 'library:welcome' %}">login</a> as a librarian to access this page</h2>
+{% endif %}
