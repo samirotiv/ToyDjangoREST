@@ -1,5 +1,6 @@
 
 *.pyc
 /djproj/*/migrations
-/*/migrations
+migrations/
 db.sqlite3
+*.swp
