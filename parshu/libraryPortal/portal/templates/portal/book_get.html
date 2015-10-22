@@ -1,0 +1,35 @@
+{% verbatim %}
+<!DOCTYPE html>
+<html lang="en">
+<script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
+<body>
+
+<div ng-app="libApp" ng-controller="bookDetails">
+  <li ng-repeat="x in bookDet">
+    {{x.title}}
+  </li>
+</div>
+
+<script>
+angular.module('libApp', [])
+.controller('bookDetails', function ($scope, $http) {
+        /*$http({
+          method: 'GET',
+          url: 'http://localhost:8000/portal/book/'
+        }).then(function successCallback(response){
+          $scope.bookDet = response
+        }, function errorCallback(response){
+          alert("Failed");
+        });*/
+  $http.get('http://localhost:8000/portal/book').success(function (response){
+    console.log(response);
+    $scope.bookDet = response;
+  })
+                    
+})
+</script>
+
+</body>
+</html>
+{% endverbatim %}

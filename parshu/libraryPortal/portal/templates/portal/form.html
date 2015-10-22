@@ -2,24 +2,51 @@
 <html lang="en">
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
 <script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
-<body>
+<body ng-app="libApp">
 
-<div ng-app="libApp" ng-controller="bookDetails">
+<div ng-controller="authorDetails">
   <form ng-submit="sendData()">
-    Author:<br>
-    <input type="text" ng-model="Author"><br>
+    Author:<br><br>
+    <input type="text" ng-model="Author"><br><br>
     <!--Publisher:<br>
     <input type="text" ng-model="Publisher">
     Books Count:<br>
     <input type="text" ng-model="BooksCount">
     <br><br>-->
     <button type="submit">SUBMIT</button>
+    <br>
   </form>
+  <br><br>
+  Author List:<br><br>
+  <ul>
+  {% verbatim %}
+    <li ng-repeat="author in authorList">{{author.authorName}}</li>
+  {% endverbatim %}
+  </ul>
+</div>
+
+<div ng-controller="bookDetails">
+  <form ng-submit="sendData()">
+    Title:<br>
+    <input type="text" ng-model="Title"><br>
+    Publisher:<br>
+    <input type="text" ng-model="Publisher">
+    <br>
+    Books Count:<br>
+    <input type="text" ng-model="BooksCount">
+    <br><br>
+    <button type="submit">SUBMIT</button>
+  </form>
+  <ul>
+    {% verbatim %}
+    <li ng-repeat="book in bookList">{{book.title}}</li>
+    {% endverbatim %}
+  </ul>
 </div>
 
 <script>
 angular.module('libApp', [])
-.controller('bookDetails', function ($scope, $http) {
+.controller('authorDetails', function ($scope, $http) {
     $scope.Author = "";
     $scope.sendData = function() {
         var data ={
@@ -34,7 +61,39 @@ angular.module('libApp', [])
         }, function errorCallback(response){
           alert("Failed");
         });
-    }                   
+    }
+    $http({
+      method:'GET',
+      url: 'http://localhost:8000/portal/author'
+    }).then(function(response){
+      $scope.authorList=response.data
+    })                   
+})
+
+.controller('bookDetails', function ($scope, $http) {
+    // $scope.Author = "";
+    $scope.sendData = function() {
+        var data ={
+          title:$scope.Title,
+          publisher:$scope.Publisher,
+          noBooks:$scope.BooksCount
+        }
+        $http({
+          method: 'POST',
+          url: 'http://localhost:8000/portal/book/',
+          data:data
+        }).then(function successCallback(response){
+          alert("Data sent succesfully!");
+        }, function errorCallback(response){
+          alert("Failed");
+        });
+    }      
+    $http({
+      method: 'GET',
+      url: 'http://localhost:8000/portal/book/',
+    }).then(function(response){
+      $scope.bookList=response.data
+    })             
 })
 </script>
 

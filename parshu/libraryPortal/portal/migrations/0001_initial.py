@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
                 ('publisher', models.CharField(max_length=200, null=True, blank=True)),
                 ('date', models.DateTimeField(null=True, verbose_name=b'Book added date', blank=True)),
                 ('noBooks', models.IntegerField(default=0)),
-                ('authors', models.ManyToManyField(to='portal.Author')),
+                ('authors', models.ManyToManyField(to='portal.Author', null=True, blank=True)),
             ],
             options={
                 'ordering': ['-title', 'publisher', 'noBooks'],

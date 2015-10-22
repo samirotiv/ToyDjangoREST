@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login , logout
 from django.contrib.auth.decorators import login_required
 
+from django.views.decorators.csrf import csrf_exempt
+
 from django.core import serializers
 from rest_framework import generics
 from portal.serializers import BookSerializer,AuthorSerializer
@@ -32,19 +34,18 @@ class SerialBookList(APIView):
         return Response(serializer.errors , status=status.HTTP_400_BAD_REQUEST)
 
 class SerialAuthorList(APIView):
+    @csrf_exempt
     def get(self,request,format=None):
         authors = Author.objects.all()
         serializer=AuthorSerializer(authors,many=True)
         return Response(serializer.data)
-
+    @csrf_exempt
     def post(self,request,format=None):
         serializer = AuthorSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data , status=status.HTTP_201_CREATED)
         return Response(serializer.errors , status=status.HTTP_400_BAD_REQUEST)
-
-
 
 def index(request):
     context = RequestContext(request)
