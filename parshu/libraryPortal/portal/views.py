@@ -19,6 +19,8 @@ from portal.models import UserProfile , Book , Author
 from rest_framework import status
 from rest_framework.response import Response
 
+from django.utils.decorators import method_decorator
+from django.utils import timezone
 
 class SerialBookList(APIView):
     def get(self,request,format=None):
@@ -34,18 +36,29 @@ class SerialBookList(APIView):
         return Response(serializer.errors , status=status.HTTP_400_BAD_REQUEST)
 
 class SerialAuthorList(APIView):
-    @csrf_exempt
+    @method_decorator(csrf_exempt)
     def get(self,request,format=None):
         authors = Author.objects.all()
         serializer=AuthorSerializer(authors,many=True)
         return Response(serializer.data)
-    @csrf_exempt
+    @method_decorator(csrf_exempt)
     def post(self,request,format=None):
         serializer = AuthorSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data , status=status.HTTP_201_CREATED)
         return Response(serializer.errors , status=status.HTTP_400_BAD_REQUEST)
+
+class SerialUpdateList(APIView):
+    """docstring for SerialUpdateList"""
+    @method_decorator(csrf_exempt)
+    def get(self,request,format=None):
+        authors = Author.objects.filter(is_read = False)
+        for author in authors:
+            author.is_read = True
+            author.save()
+        serializer = AuthorSerializer(authors, many=True)
+        return Response(serializer.data)
 
 def index(request):
     context = RequestContext(request)

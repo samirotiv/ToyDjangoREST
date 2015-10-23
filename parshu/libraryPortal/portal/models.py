@@ -7,6 +7,9 @@ from django.contrib.auth.models import User
 # Create your models here.
 class Author(models.Model):
     authorName = models.CharField(max_length=200)
+    date_added = models.DateTimeField(blank=True, null=True)
+    version = models.IntegerField(blank=True, null=True)
+    is_read = models.BooleanField(default=False)
     def __str__(self):
         return self.authorName
 

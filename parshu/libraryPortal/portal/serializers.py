@@ -17,4 +17,4 @@ class AuthorSerializer(serializers.ModelSerializer):
 	"""docstring for AuthorSerializer"""
 	class Meta:
 		model = Author
-		fields=('authorName',)
+		#fields=('authorName','date_added',)

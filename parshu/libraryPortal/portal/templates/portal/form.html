@@ -6,7 +6,7 @@
 
 <div ng-controller="authorDetails">
   <form ng-submit="sendData()">
-    Author:<br><br>
+    Authoraiyyo:<br><br>
     <input type="text" ng-model="Author"><br><br>
     <!--Publisher:<br>
     <input type="text" ng-model="Publisher">
@@ -22,6 +22,14 @@
   {% verbatim %}
     <li ng-repeat="author in authorList">{{author.authorName}}</li>
   {% endverbatim %}
+  </ul>
+
+  <ul>
+    <li ng-repeat="notif in notifs">
+      {% verbatim %}
+      {{notif.authorName}}
+      {% endverbatim %}
+    </li>
   </ul>
 </div>
 
@@ -46,11 +54,13 @@
 
 <script>
 angular.module('libApp', [])
-.controller('authorDetails', function ($scope, $http) {
+.controller('authorDetails', function ($scope, $http,$timeout) {
     $scope.Author = "";
+    $scope.notifs = [];
     $scope.sendData = function() {
         var data ={
-          authorName:$scope.Author
+          authorName:$scope.Author,
+          date_added:new Date()
         }
         $http({
           method: 'POST',
@@ -64,10 +74,32 @@ angular.module('libApp', [])
     }
     $http({
       method:'GET',
-      url: 'http://localhost:8000/portal/author'
+      url: 'http://localhost:8000/portal/author/'
     }).then(function(response){
       $scope.authorList=response.data
-    })                   
+    })  
+
+    function tick() {
+      $http.get('/portal/author/updates/').success(function (response){
+        console.log(response);
+        var i=0;
+        if(response.length!=0){
+          for(i=0;i<response.length;i++){
+            $scope.notifs.push(response[i]);
+          }
+        }
+        $timeout(tick,2000);
+      });
+    }
+    tick();
+    // function tick() {
+    //   $http.get('/portal/author/').success(function (response){
+    //     console.log(response);
+    //     $scope.authorList = response;
+    //     $timeout(tick,2000);
+    //   });
+    // }
+    // tick();           
 })
 
 .controller('bookDetails', function ($scope, $http) {
