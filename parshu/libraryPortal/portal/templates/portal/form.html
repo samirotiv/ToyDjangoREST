@@ -1,133 +1,144 @@
 <!DOCTYPE html>
-<html lang="en">
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
-<script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
-<body ng-app="libApp">
+<html>
+  <head>
+    <title>IDBWrapper TestApp</title>
+  </head>
+  <body ng-app="AuthorApp">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/idbwrapper/1.6.0/idbstore.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
+    <script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+    <div ng-controller="LocalCtrl">
+      Author:<br>
+      <input id="author" type="text" ng-model="author"><br>
+      <button ng-click="addAuthor()">Add Book</button>
+      <br/><br/>
+      <ul>
+        <li ng-repeat="book in Books">{{book.title}}</li>
+      </ul>
+    </div>
+    <!--<button onclick="showBook()">Show book</button>-->
+  </body>
+  <script type="text/javascript">
+  var masterid = [];
+  var libraryApp = new IDBStore({
+  dbVersion: 1,
+  storeName: 'book',
+  keyPath: 'id',
+  autoIncrement: true,
+  onStoreReady: function(){
+    console.log('Library Ready');
+  }
+});
+/*var masterid = [];
+function addBook(){
+  var newBook = {
+    title: document.getElementById("title").value,
+    author: document.getElementById("author").value, 
+    stock: 4
+  };
+  var onsuccess = function(id){
+    console.log('The book is inserted:' + id);
+    masterid.push(id);
+  }
+  var onerror = function(id){
+    console.log('Some error');
+  }
 
-<div ng-controller="authorDetails">
-  <form ng-submit="sendData()">
-    Authoraiyyo:<br><br>
-    <input type="text" ng-model="Author"><br><br>
-    <!--Publisher:<br>
-    <input type="text" ng-model="Publisher">
-    Books Count:<br>
-    <input type="text" ng-model="BooksCount">
-    <br><br>-->
-    <button type="submit">SUBMIT</button>
-    <br>
-  </form>
-  <br><br>
-  Author List:<br><br>
-  <ul>
-  {% verbatim %}
-    <li ng-repeat="author in authorList">{{author.authorName}}</li>
-  {% endverbatim %}
-  </ul>
+  libraryApp.put(newBook,onsuccess,onerror);
+}
+function showBook(){
+  var onsuccess = function(data){
+    console.log(data);
+  }
+  var onerror = function(){
+    alert('Error');
+  }
+  //for (i=0;i<10;i++){
+    libraryApp.get(masterid[1],onsuccess,onerror);
+  //}
+  
+}*/
+// function addAuthor(){
+//   $.ajax({
+//     type: 'GET',
+//     url: "http://localhost:8000/portal/author/books/" + document.getElementById("author").value.toString(),
+//     data: document.getElementById("author").value,
+//     success: function(response){
+      // for(var i = 0;i<response.length;i++){
+          
+      //         var newBook = {
+      //         title: response[i].title,
+      //         publisher: response[i].publisher,
+      //         noBooks: response[i].noBooks,
+      //         date: response[i].date,
+      //         id: response[i].id
+      //     };
+      //     var onsuccess = function(id){
+      //         console.log('The book is inserted:' + id);
+      //     }
+      //     var onerror = function(id){
+      //         console.log('Some error');
+      //     }
+      //     libraryApp.put(newBook,onsuccess,onerror);
+      //       }
+      //     }
+          
+          
+//       }
+    
+//   );
 
-  <ul>
-    <li ng-repeat="notif in notifs">
-      {% verbatim %}
-      {{notif.authorName}}
-      {% endverbatim %}
-    </li>
-  </ul>
-</div>
+angular.module("AuthorApp",[])
 
-<div ng-controller="bookDetails">
-  <form ng-submit="sendData()">
-    Title:<br>
-    <input type="text" ng-model="Title"><br>
-    Publisher:<br>
-    <input type="text" ng-model="Publisher">
-    <br>
-    Books Count:<br>
-    <input type="text" ng-model="BooksCount">
-    <br><br>
-    <button type="submit">SUBMIT</button>
-  </form>
-  <ul>
-    {% verbatim %}
-    <li ng-repeat="book in bookList">{{book.title}}</li>
-    {% endverbatim %}
-  </ul>
-</div>
-
-<script>
-angular.module('libApp', [])
-.controller('authorDetails', function ($scope, $http,$timeout) {
-    $scope.Author = "";
-    $scope.notifs = [];
-    $scope.sendData = function() {
-        var data ={
-          authorName:$scope.Author,
-          date_added:new Date()
-        }
-        $http({
-          method: 'POST',
-          url: 'http://localhost:8000/portal/author/',
-          data:data
-        }).then(function successCallback(response){
-          alert("Data sent succesfully!");
-        }, function errorCallback(response){
-          alert("Failed");
-        });
-    }
+.controller("LocalCtrl", function($scope, $http){
+  $scope.author=""
+  $scope.Books=[]
+  var dl = []
+  var count=0;
+  $scope.addAuthor=function(){
     $http({
       method:'GET',
-      url: 'http://localhost:8000/portal/author/'
-    }).then(function(response){
-      $scope.authorList=response.data
-    })  
-
-    function tick() {
-      $http.get('/portal/author/updates/').success(function (response){
-        console.log(response);
-        var i=0;
-        if(response.length!=0){
-          for(i=0;i<response.length;i++){
-            $scope.notifs.push(response[i]);
-          }
+      url: "http://localhost:8000/portal/author/books/",
+      params:{'author':$scope.author}
+    })
+    .success(function(response){
+      console.log("in success branch");
+      for(var i = 0;i<response.length;i++){
+        var newBook = {
+          title: response[i].title,
+          publisher: response[i].publisher,
+          noBooks: response[i].noBooks,
+          date: response[i].date,
+          id: response[i].id
+        };
+        var onsuccess = function(id){
+            console.log('The book is inserted:' + id);
         }
-        $timeout(tick,2000);
-      });
-    }
-    tick();
-    // function tick() {
-    //   $http.get('/portal/author/').success(function (response){
-    //     console.log(response);
-    //     $scope.authorList = response;
-    //     $timeout(tick,2000);
-    //   });
-    // }
-    // tick();           
-})
-
-.controller('bookDetails', function ($scope, $http) {
-    // $scope.Author = "";
-    $scope.sendData = function() {
-        var data ={
-          title:$scope.Title,
-          publisher:$scope.Publisher,
-          noBooks:$scope.BooksCount
+        var onerror = function(id){
+            console.log('Some error');
         }
-        $http({
-          method: 'POST',
-          url: 'http://localhost:8000/portal/book/',
-          data:data
-        }).then(function successCallback(response){
-          alert("Data sent succesfully!");
-        }, function errorCallback(response){
-          alert("Failed");
-        });
-    }      
-    $http({
-      method: 'GET',
-      url: 'http://localhost:8000/portal/book/',
-    }).then(function(response){
-      $scope.bookList=response.data
-    })             
-})
+        libraryApp.put(newBook,onsuccess,onerror);
+      }
+      $scope.Books=response;
+    })
+    .error(function(response){
+      console.log("in error branch");
+      var onsuccess = function(data){
+        console.log(data);
+         $scope.Books = data;
+         $scope.$apply()
+      }
+      var onerror = function(error){
+        console.log(error);
+      }
+
+      var onEnd = function (item) {
+        console.log('All done.');
+      };
+      libraryApp.getAll(onsuccess,onerror , onEnd);
+    });
+  }
+});
+
 </script>
-
-</body>
 </html>

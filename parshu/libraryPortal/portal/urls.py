@@ -8,7 +8,7 @@ urlpatterns = [
     url(r'^book/$', views.SerialBookList.as_view(), name='book'),
     url(r'^author/$', views.SerialAuthorList.as_view(), name='Author'),
     url(r'^author/updates/$',views.SerialUpdateAuthorList.as_view(),name='Update'),
-    url(r'^author/books/(?P<name>[A-Za-z]+)/$', views.SerialSendBookListOfAuthor.as_view(), name='AuthorList'),
+    url(r'^author/books/$', views.SerialSendBookListOfAuthor.as_view(), name='AuthorList'),
     
     # url(r'^editbook/(?P<primaryKey>[0-9]+)/$', views.editBook, name='editBook'),
     # url(r'^deletebook/(?P<primaryKey>[0-9]+)/$', views.deleteBook, name='deleteBook'),

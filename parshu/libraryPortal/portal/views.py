@@ -63,14 +63,15 @@ class SerialUpdateAuthorList(APIView):
 class SerialSendBookListOfAuthor(APIView):
     """docstring for SerialsendList"""
     @method_decorator(csrf_exempt)
-    def get(self, request, name, format=None ):
+    def get(self, request, format=None ):
+        name = request.GET['author']
         bookList  = Book.objects.filter(authors__authorName=name)
         serializer = BookSerializer(bookList, many=True)
         return Response(serializer.data)
             
 def index(request):
     context = RequestContext(request)
-    return render_to_response('portal/localStorage.html', {}, context)
+    return render_to_response('portal/form.html', {}, context)
 
 def registerUser(request):
     context = RequestContext(request)

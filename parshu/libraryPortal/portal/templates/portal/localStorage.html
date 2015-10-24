@@ -6,6 +6,7 @@
   <body>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/idbwrapper/1.6.0/idbstore.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
+    <script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
     <div>
       Author:<br>
       <input id="author" type="text"><br>
@@ -62,32 +63,35 @@ function addAuthor(){
     type: 'GET',
     url: "http://localhost:8000/portal/author/books/" + document.getElementById("author").value.toString(),
     data: document.getElementById("author").value,
-    success: function(response){
+    success:function(response){
       for(var i = 0;i<response.length;i++){
-          libraryApp.iterate(onItem,{
-            index: 'pk',
-            filterDuplicates: true,
-            onEnd: function(){
-              var newBook = {
-              title: response[i].title,
-              publisher: response[i].publisher,
-              noBooks: response[i].noBooks,
-              date: response[i].date,
-              pk: response[i].id
-          };
-          var onsuccess = function(id){
-              console.log('The book is inserted:' + id);
+        libraryApp.iterate(onItem,{
+          index: 'pk',
+          filterDuplicates: true,
+          onEnd: function(){
+            var newBook = {
+            title: response[i].title,
+            publisher: response[i].publisher,
+            noBooks: response[i].noBooks,
+            date: response[i].date,
+            pk: response[i].id
+        };
+        var onsuccess = function(id){
+            console.log('The book is inserted:' + id);
+        }
+        var onerror = function(id){
+            console.log('Some error');
+        }
+        libraryApp.put(newBook,onsuccess,onerror);
           }
-          var onerror = function(id){
-              console.log('Some error');
-          }
-          libraryApp.put(newBook,onsuccess,onerror);
-            }
-          });
-          
-          
+        });   
       }
     }
   });
 }</script>
+
+
+
+
+
 </html>
