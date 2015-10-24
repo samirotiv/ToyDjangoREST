@@ -20,10 +20,6 @@
   storeName: 'book',
   keyPath: 'id',
   autoIncrement: true,
-  indexes: [
-  {
-    idkey:'pk'
-  }],
   onStoreReady: function(){
     console.log('Library Ready');
   }
@@ -61,19 +57,15 @@ function addAuthor(){
   $.ajax({
     type: 'GET',
     url: "http://localhost:8000/portal/author/books/" + document.getElementById("author").value.toString(),
-    data: document.getElementById("author").value,
     success: function(response){
-      for(var i = 0;i<response.length;i++){
-          libraryApp.iterate(onItem,{
-            index: 'pk',
-            filterDuplicates: true,
-            onEnd: function(){
-              var newBook = {
+      for(var i = 0;i<response.length;i++)
+      {
+          var newBook = {
               title: response[i].title,
               publisher: response[i].publisher,
               noBooks: response[i].noBooks,
               date: response[i].date,
-              pk: response[i].id
+              id: response[i].id
           };
           var onsuccess = function(id){
               console.log('The book is inserted:' + id);
@@ -83,11 +75,9 @@ function addAuthor(){
           }
           libraryApp.put(newBook,onsuccess,onerror);
             }
-          });
-          
-          
       }
+      
     }
-  });
+  );
 }</script>
 </html>
