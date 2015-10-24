@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 class Author(models.Model):
     authorName = models.CharField(max_length=200)
-    date_added = models.DateTimeField(blank=True, null=True)
+    date_added = models.DateTimeField(default=datetime.datetime.now)
     version = models.IntegerField(blank=True, null=True)
     is_read = models.BooleanField(default=False)
     def __str__(self):
@@ -20,7 +20,7 @@ class Book(models.Model):
     title = models.CharField(max_length=200)
     publisher = models.CharField(max_length=200, blank=True, null=True)
     authors = models.ManyToManyField(Author, blank=True, null=True)
-    date = models.DateTimeField('Book added date', blank=True, null=True)
+    date = models.DateTimeField('Book added date', default=datetime.datetime.now)
     noBooks = models.IntegerField(default=0)
 
     def __str__(self):

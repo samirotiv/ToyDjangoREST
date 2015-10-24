@@ -49,7 +49,7 @@ class SerialAuthorList(APIView):
             return Response(serializer.data , status=status.HTTP_201_CREATED)
         return Response(serializer.errors , status=status.HTTP_400_BAD_REQUEST)
 
-class SerialUpdateList(APIView):
+class SerialUpdateAuthorList(APIView):
     """docstring for SerialUpdateList"""
     @method_decorator(csrf_exempt)
     def get(self,request,format=None):
@@ -60,9 +60,17 @@ class SerialUpdateList(APIView):
         serializer = AuthorSerializer(authors, many=True)
         return Response(serializer.data)
 
+class SerialSendBookListOfAuthor(APIView):
+    """docstring for SerialsendList"""
+    @method_decorator(csrf_exempt)
+    def get(self, request, name, format=None ):
+        bookList  = Book.objects.filter(authors__authorName=name)
+        serializer = BookSerializer(bookList, many=True)
+        return Response(serializer.data)
+            
 def index(request):
     context = RequestContext(request)
-    return render_to_response('portal/form.html', {}, context)
+    return render_to_response('portal/localStorage.html', {}, context)
 
 def registerUser(request):
     context = RequestContext(request)

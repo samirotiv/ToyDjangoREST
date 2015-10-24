@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>IDBWrapper TestApp</title>
+  </head>
+  <body>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/idbwrapper/1.6.0/idbstore.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
+    <div>
+      Author:<br>
+      <input id="author" type="text"><br>
+      <button onclick="addAuthor()">Add Book</button>
+    </div>
+    <!--<button onclick="showBook()">Show book</button>-->
+  </body>
+  <script type="text/javascript">
+  var masterid = [];
+  var libraryApp = new IDBStore({
+  dbVersion: 1,
+  storeName: 'book',
+  keyPath: 'id',
+  autoIncrement: true,
+  indexes: [
+  {
+    idkey:'pk'
+  }],
+  onStoreReady: function(){
+    console.log('Library Ready');
+  }
+});
+/*var masterid = [];
+function addBook(){
+  var newBook = {
+    title: document.getElementById("title").value,
+    author: document.getElementById("author").value, 
+    stock: 4
+  };
+  var onsuccess = function(id){
+    console.log('The book is inserted:' + id);
+    masterid.push(id);
+  }
+  var onerror = function(id){
+    console.log('Some error');
+  }
+
+  libraryApp.put(newBook,onsuccess,onerror);
+}
+function showBook(){
+  var onsuccess = function(data){
+    console.log(data);
+  }
+  var onerror = function(){
+    alert('Error');
+  }
+  //for (i=0;i<10;i++){
+    libraryApp.get(masterid[1],onsuccess,onerror);
+  //}
+  
+}*/
+function addAuthor(){
+  $.ajax({
+    type: 'GET',
+    url: "http://localhost:8000/portal/author/books/" + document.getElementById("author").value.toString(),
+    data: document.getElementById("author").value,
+    success: function(response){
+      for(var i = 0;i<response.length;i++){
+          libraryApp.iterate(onItem,{
+            index: 'pk',
+            filterDuplicates: true,
+            onEnd: function(){
+              var newBook = {
+              title: response[i].title,
+              publisher: response[i].publisher,
+              noBooks: response[i].noBooks,
+              date: response[i].date,
+              pk: response[i].id
+          };
+          var onsuccess = function(id){
+              console.log('The book is inserted:' + id);
+          }
+          var onerror = function(id){
+              console.log('Some error');
+          }
+          libraryApp.put(newBook,onsuccess,onerror);
+            }
+          });
+          
+          
+      }
+    }
+  });
+}</script>
+</html>
