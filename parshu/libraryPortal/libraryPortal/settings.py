@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'portal',
     'rest_framework',
     'corsheaders',
+    'ws4redis',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -60,6 +61,17 @@ AUTH_PROFILE_MODULE = 'portal.UserProfile'
 
 LOGIN_URL = '/portal/login/'
 
+WEBSOCKET_URL = '/ws/'
+
+WS4REDIS_EXPIRE = 7200
+
+WS4REDIS_PREFIX = 'ws'
+
+WSGI_APPLICATION = 'ws4redis.django_runserver.application'
+
+WS4REDIS_HEARTBEAT = '--heartbeat--'
+
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -71,13 +83,18 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.core.context_processors.static',
+                'ws4redis.context_processors.default',
+
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'libraryPortal.wsgi.application'
+# WSGI_APPLICATION = 'libraryPortal.wsgi.application'
 
+SESSION_ENGINE = 'redis_sessions.session'
+SESSION_REDIS_PREFIX = 'session'
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
@@ -106,6 +123,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
+
+STATIC_ROOT = os.environ.get('DJANGO_STATIC_ROOT', '')
 
 STATIC_URL = '/static/'
 

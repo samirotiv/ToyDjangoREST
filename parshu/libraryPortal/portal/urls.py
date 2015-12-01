@@ -1,9 +1,12 @@
-from django.conf.urls import url
+from django.conf.urls import url,patterns , include
 from . import views
-from rest_framework.urlpatterns import format_suffix_patterns
-urlpatterns = [
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
-    url(r'^$', views.index, name='index'),
+from rest_framework.urlpatterns import format_suffix_patterns
+
+urlpatterns = patterns('',
+
+    # url(r'^$', views.index, name='index'),
     #url(r'^addbook/$', name='addBook'),
     url(r'^book/$', views.SerialBookList.as_view(), name='book'),
     url(r'^author/$', views.SerialAuthorList.as_view(), name='Author'),
@@ -22,5 +25,9 @@ urlpatterns = [
 
     url(r'^librarian/(?P<sortby>[A-Za-z]+)/$', views.librarian, name='librarian'),
 
-]
+
+    url(r'^$', views.UserChatView.as_view(), name='user_chat'),
+
+) + staticfiles_urlpatterns()
+
 urlpatterns = format_suffix_patterns(urlpatterns)

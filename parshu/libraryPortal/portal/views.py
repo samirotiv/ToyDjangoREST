@@ -22,6 +22,33 @@ from rest_framework.response import Response
 from django.utils.decorators import method_decorator
 from django.utils import timezone
 
+from ws4redis.redis_store import RedisMessage
+from ws4redis.publisher import RedisPublisher
+from django.views.generic.base import TemplateView
+from django.http import HttpResponse
+from ws4redis.redis_store import SELF
+
+class UserChatView(TemplateView):
+    template_name = 'portal/form.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(UserChatView, self).get_context_data(**kwargs)
+        context.update(users=User.objects.all())
+        return context
+
+    @csrf_exempt
+    def dispatch(self, *args, **kwargs):
+        return super(UserChatView, self).dispatch(*args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        redis_publisher = RedisPublisher(facility='foobar', users=[SELF])
+        message = RedisMessage(request.POST.get('message'))
+        redis_publisher.publish_message(message)
+        redis_publisher.publish_message(message)
+        return HttpResponse('OK')
+
+
+
 class SerialBookList(APIView):
     def get(self,request,format=None):
         books = Book.objects.all()

@@ -7,16 +7,17 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/idbwrapper/1.6.0/idbstore.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
     <script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ws4redis.js"></script>
     <div ng-controller="LocalCtrl">
       Author:<br>
       <input id="author" type="text" ng-model="author"><br>
-      <button ng-click="addAuthor()">Add Book</button>
+      <button id="send_message" ng-click="addAuthor()">show Books</button>
       <br/><br/>
       <ul>
         <li ng-repeat="book in Books">{{book.title}}</li>
       </ul>
     </div>
-    <!--<button onclick="showBook()">Show book</button>-->
+    <!-- <button id="send_message" onclick="showBook()">Show book</button> -->
   </body>
   <script type="text/javascript">
   var masterid = [];
@@ -126,7 +127,8 @@ angular.module("AuthorApp",[])
       var onsuccess = function(data){
         console.log(data);
          $scope.Books = data;
-         $scope.$apply()
+         alert("data")
+         // $scope.$apply()
       }
       var onerror = function(error){
         console.log(error);
@@ -139,6 +141,44 @@ angular.module("AuthorApp",[])
     });
   }
 });
+
+
+  jQuery(document).ready(function($) {
+      var ws4redis = WS4Redis({
+          uri: '{{ WEBSOCKET_URI }}foobar?subscribe-user',
+          receive_message: receiveMessage,
+          heartbeat_msg: {{ WS4REDIS_HEARTBEAT }}
+          
+      });
+      
+      $("#author").keydown(function(event) {
+          if (event.keyCode === 13) {
+            event.preventDefault();
+            sendMessage();
+          }
+      });
+
+      // attach this function to an event handler on your site
+      $('#send_message').click(sendMessage);
+
+      // send message to the server using Ajax
+      function sendMessage() {
+        $.post('http://localhost:8000/portal/', {
+          message: $('#author').val()
+        });
+      }
+
+      // // send message though the Websocket to the server
+      // $('#send_message').click(function() {
+      //     ws4redis.send_message($('#author').val());
+      // });
+  
+      // receive a message though the websocket from the server
+      function receiveMessage(msg) {
+          alert('Message from Websocket: ' + msg);
+      }
+  });
+
 
 </script>
 </html>
